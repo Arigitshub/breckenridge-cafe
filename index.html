@@ -101,17 +101,20 @@
                     </div>
                 </div>
                 <div class="about-visual">
-                    <div class="glass-card visual-card">
-                        <div class="card-glow"></div>
-                        <div class="card-content">
-                            <div class="card-header-accent">
-                                <span class="badge-status">OPEN DAILY</span>
-                                <span class="hours-text">8:00 AM - 10:00 PM</span>
-                            </div>
-                            <div class="card-body-text">
-                                <div class="quote-icon"><i class="fa-solid fa-quote-left"></i></div>
-                                <p>A truly magical space in Williamsburg. The garden patio is incredibly peaceful, the coffee is rich, and adding CBG to my morning matcha completely changed my workday focus.</p>
-                                <div class="quote-author">- Sarah K., Williamsburg Local</div>
+                    <div class="about-image-wrapper">
+                        <img src="assets/images/garden_patio.png" alt="Breckenridge Garden Patio" class="about-img">
+                        <div class="glass-card visual-card overlay-quote-card">
+                            <div class="card-glow"></div>
+                            <div class="card-content">
+                                <div class="card-header-accent">
+                                    <span class="badge-status">OPEN DAILY</span>
+                                    <span class="hours-text">8:00 AM - 10:00 PM</span>
+                                </div>
+                                <div class="card-body-text">
+                                    <div class="quote-icon"><i class="fa-solid fa-quote-left"></i></div>
+                                    <p>A truly magical space in Williamsburg. The garden patio is incredibly peaceful, the coffee is rich, and adding CBG to my morning matcha completely changed my workday focus.</p>
+                                    <div class="quote-author">- Sarah K., Williamsburg Local</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -133,6 +136,18 @@
                 <!-- Visualizer Cup (Left) -->
                 <div class="lab-visualizer">
                     <div class="cup-container">
+                        <!-- Steam for Hot drinks -->
+                        <div class="steam-container active" id="steam-container">
+                            <span class="steam-line"></span>
+                            <span class="steam-line"></span>
+                            <span class="steam-line"></span>
+                        </div>
+                        <!-- Condensation droplets for Cold drinks -->
+                        <div class="droplets-container" id="droplets-container">
+                            <span class="droplet"></span>
+                            <span class="droplet"></span>
+                            <span class="droplet"></span>
+                        </div>
                         <div class="cup">
                             <div class="cup-handle"></div>
                             <div class="liquid" id="liquid-color">
@@ -240,99 +255,117 @@
 
             <!-- Tab Content: Drinks -->
             <div class="menu-content active" id="tab-drinks">
-                <div class="menu-grid">
-                    <div class="menu-item">
-                        <div class="menu-item-hdr">
-                            <span class="menu-item-title">Peak 7 Drip Coffee</span>
-                            <span class="menu-item-price">$4.50</span>
+                <div class="menu-display-container">
+                    <div class="menu-featured-card glass-card">
+                        <img src="assets/images/matcha_latte.png" alt="Barista Choice Matcha Latte" class="menu-featured-img">
+                        <div class="featured-overlay">
+                            <span class="featured-badge"><i class="fa-solid fa-star"></i> Barista Choice</span>
+                            <div class="featured-meta">
+                                <h3>Oat Milk Matcha Latte</h3>
+                                <p>Ceremonial grade Uji Matcha, creamy oat milk, sweetened with organic agave. Try it with a CBG infusion for maximum cognitive clarity!</p>
+                                <span class="featured-price">$6.50</span>
+                            </div>
                         </div>
-                        <p class="menu-item-desc">Organic dark roast, bold and rich flavor profile, brewed fresh hourly.</p>
                     </div>
-                    <div class="menu-item">
-                        <div class="menu-item-hdr">
-                            <span class="menu-item-title">Oat Milk Matcha Latte</span>
-                            <span class="menu-item-price">$6.50</span>
+                    <div class="menu-grid">
+                        <div class="menu-item">
+                            <div class="menu-item-hdr">
+                                <span class="menu-item-title">Peak 7 Drip Coffee</span>
+                                <span class="menu-item-price">$4.50</span>
+                            </div>
+                            <p class="menu-item-desc">Organic dark roast, bold and rich flavor profile, brewed fresh hourly.</p>
                         </div>
-                        <p class="menu-item-desc">Ceremonial grade Uji Matcha, creamy oat milk, sweetened with organic agave.</p>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-item-hdr">
-                            <span class="menu-item-title">BG Signature Espresso</span>
-                            <span class="menu-item-price">$4.00</span>
+                        <div class="menu-item">
+                            <div class="menu-item-hdr">
+                                <span class="menu-item-title">BG Signature Espresso</span>
+                                <span class="menu-item-price">$4.00</span>
+                            </div>
+                            <p class="menu-item-desc">Double shot of our custom medium-roast house blend with notes of cacao and hazelnut.</p>
                         </div>
-                        <p class="menu-item-desc">Double shot of our custom medium-roast house blend with notes of cacao and hazelnut.</p>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-item-hdr">
-                            <span class="menu-item-title">Nitro Cold Brew</span>
-                            <span class="menu-item-price">$5.50</span>
+                        <div class="menu-item">
+                            <div class="menu-item-hdr">
+                                <span class="menu-item-title">Nitro Cold Brew</span>
+                                <span class="menu-item-price">$5.50</span>
+                            </div>
+                            <p class="menu-item-desc">Infused with nitrogen for a velvety, creamy mouthfeel and natural sweetness.</p>
                         </div>
-                        <p class="menu-item-desc">Infused with nitrogen for a velvety, creamy mouthfeel and natural sweetness.</p>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-item-hdr">
-                            <span class="menu-item-title">Iced Rosewater Tea</span>
-                            <span class="menu-item-price">$5.00</span>
+                        <div class="menu-item">
+                            <div class="menu-item-hdr">
+                                <span class="menu-item-title">Iced Rosewater Tea</span>
+                                <span class="menu-item-price">$5.00</span>
+                            </div>
+                            <p class="menu-item-desc">Fragrant herbal tea with organic rose petals, hibiscus, and a hint of lime.</p>
                         </div>
-                        <p class="menu-item-desc">Fragrant herbal tea with organic rose petals, hibiscus, and a hint of lime.</p>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-item-hdr">
-                            <span class="menu-item-title">Golden Turmeric Latte</span>
-                            <span class="menu-item-price">$6.00</span>
+                        <div class="menu-item">
+                            <div class="menu-item-hdr">
+                                <span class="menu-item-title">Golden Turmeric Latte</span>
+                                <span class="menu-item-price">$6.00</span>
+                            </div>
+                            <p class="menu-item-desc">Stone-ground turmeric, ginger, black pepper, and cinnamon steamed with coconut milk.</p>
                         </div>
-                        <p class="menu-item-desc">Stone-ground turmeric, ginger, black pepper, and cinnamon steamed with coconut milk.</p>
                     </div>
                 </div>
             </div>
 
             <!-- Tab Content: Eats -->
             <div class="menu-content" id="tab-eats">
-                <div class="menu-grid">
-                    <div class="menu-item">
-                        <div class="menu-item-hdr">
-                            <span class="menu-item-title">Goat Cheese & Spinach Crepe</span>
-                            <span class="menu-item-price">$14.00</span>
+                <div class="menu-display-container">
+                    <div class="menu-featured-row">
+                        <div class="menu-featured-card glass-card">
+                            <img src="assets/images/nutella_crepe.png" alt="House Special Nutella & Berries Crepe" class="menu-featured-img">
+                            <div class="featured-overlay">
+                                <span class="featured-badge"><i class="fa-solid fa-fire"></i> House Special</span>
+                                <div class="featured-meta">
+                                    <h3>Nutella & Berries Crepe</h3>
+                                    <p>Decadent sweet crepe stuffed with rich Nutella, fresh strawberries, raspberries, and powdered sugar.</p>
+                                    <span class="featured-price">$12.00</span>
+                                </div>
+                            </div>
                         </div>
-                        <p class="menu-item-desc">Savory house crepe, organic goat cheese, baby spinach, roasted pine nuts, and balsamic glaze.</p>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-item-hdr">
-                            <span class="menu-item-title">Nutella & Berries Crepe</span>
-                            <span class="menu-item-price">$12.00</span>
+                        <div class="menu-featured-card glass-card">
+                            <img src="assets/images/acai_bowl.png" alt="Wellness Pick Acai Bowl" class="menu-featured-img">
+                            <div class="featured-overlay">
+                                <span class="featured-badge"><i class="fa-solid fa-seedling"></i> Wellness Pick</span>
+                                <div class="featured-meta">
+                                    <h3>BG Superfood Acai Bowl</h3>
+                                    <p>Pure organic acai, house-made hemp seed granola, fresh banana, kiwi, honey drizzle, and chia seeds.</p>
+                                    <span class="featured-price">$15.00</span>
+                                </div>
+                            </div>
                         </div>
-                        <p class="menu-item-desc">Decadent sweet crepe stuffed with rich Nutella, fresh strawberries, raspberries, and powdered sugar.</p>
                     </div>
-                    <div class="menu-item">
-                        <div class="menu-item-hdr">
-                            <span class="menu-item-title">BG Superfood Acai Bowl</span>
-                            <span class="menu-item-price">$15.00</span>
+                    <div class="menu-grid">
+                        <div class="menu-item">
+                            <div class="menu-item-hdr">
+                                <span class="menu-item-title">Goat Cheese & Spinach Crepe</span>
+                                <span class="menu-item-price">$14.00</span>
+                            </div>
+                            <p class="menu-item-desc">Savory house crepe, organic goat cheese, baby spinach, roasted pine nuts, and balsamic glaze.</p>
                         </div>
-                        <p class="menu-item-desc">Pure organic acai, house-made hemp seed granola, fresh banana, kiwi, honey drizzle, and chia seeds.</p>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-item-hdr">
-                            <span class="menu-item-title">Smoked Salmon Crepe</span>
-                            <span class="menu-item-price">$16.50</span>
+                        <div class="menu-item">
+                            <div class="menu-item-hdr">
+                                <span class="menu-item-title">Smoked Salmon Crepe</span>
+                                <span class="menu-item-price">$16.50</span>
+                            </div>
+                            <p class="menu-item-desc">Savory crepe with wild-caught smoked salmon, cream cheese, capers, dill, and thinly sliced red onions.</p>
                         </div>
-                        <p class="menu-item-desc">Savory crepe with wild-caught smoked salmon, cream cheese, capers, dill, and thinly sliced red onions.</p>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-item-hdr">
-                            <span class="menu-item-title">Williamsburg Vegan Muffin</span>
-                            <span class="menu-item-price">$4.75</span>
+                        <div class="menu-item">
+                            <div class="menu-item-hdr">
+                                <span class="menu-item-title">Williamsburg Vegan Muffin</span>
+                                <span class="menu-item-price">$4.75</span>
+                            </div>
+                            <p class="menu-item-desc">Gluten-free, vegan baked muffin made daily. Ask your barista for today's seasonal fruit flavor.</p>
                         </div>
-                        <p class="menu-item-desc">Gluten-free, vegan baked muffin made daily. Ask your barista for today's seasonal fruit flavor.</p>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-item-hdr">
-                            <span class="menu-item-title">Avocado Toast Crepe</span>
-                            <span class="menu-item-price">$13.50</span>
-                        </div>
-                        <p class="menu-item-desc">Fresh smashed avocado, cherry tomatoes, microgreens, and everything bagel seasoning in a folded savory crepe.</p>
-                    </div>
-                </div>
-            </div>
+                        <div class="menu-item">
+                            <div class="menu-item-hdr">
+                                <span class="menu-item-title">Avocado Toast Crepe</span>
+                                <span class="menu-item-price">$13.50</span>
+                              </div>
+                              <p class="menu-item-desc">Fresh smashed avocado, cherry tomatoes, microgreens, and everything bagel seasoning in a folded savory crepe.</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
 
             <!-- Tab Content: Shop -->
             <div class="menu-content" id="tab-shop">
@@ -514,32 +547,34 @@
         <div class="modal-content glass-card">
             <button class="modal-close" id="auth-modal-close">&times;</button>
             
-            <!-- Sign In Form -->
-            <div id="signin-form-container">
-                <h3>Welcome Back</h3>
-                <p>Sign in with your Neon Auth account to save your favorite custom infusions and access premium wellness features.</p>
-                <form id="signin-form">
-                    <input type="email" id="signin-email" placeholder="Email Address" required class="form-input">
-                    <input type="password" id="signin-password" placeholder="Password" required class="form-input">
-                    <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-                </form>
-                <div class="auth-switch">
-                    Don't have an account? <a href="#" id="switch-to-signup">Create Account</a>
+            <div class="auth-forms-wrapper">
+                <!-- Sign In Form -->
+                <div id="signin-form-container" class="auth-form-container active">
+                    <h3>Welcome Back</h3>
+                    <p>Sign in with your account to save your favorite custom infusions and access premium wellness features.</p>
+                    <form id="signin-form">
+                        <input type="email" id="signin-email" placeholder="Email Address" required class="form-input">
+                        <input type="password" id="signin-password" placeholder="Password" required class="form-input">
+                        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                    </form>
+                    <div class="auth-switch">
+                        Don't have an account? <a href="#" id="switch-to-signup">Create Account</a>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Sign Up Form -->
-            <div id="signup-form-container" style="display: none;">
-                <h3>Create Account</h3>
-                <p>Register to save your customized drinks directly to our secure Postgres database.</p>
-                <form id="signup-form">
-                    <input type="text" id="signup-name" placeholder="Full Name" required class="form-input">
-                    <input type="email" id="signup-email" placeholder="Email Address" required class="form-input">
-                    <input type="password" id="signup-password" placeholder="Password (min. 8 characters)" required class="form-input" minlength="8">
-                    <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
-                </form>
-                <div class="auth-switch">
-                    Already have an account? <a href="#" id="switch-to-signin">Sign In</a>
+                <!-- Sign Up Form -->
+                <div id="signup-form-container" class="auth-form-container inactive">
+                    <h3>Create Account</h3>
+                    <p>Register to save your customized drinks directly to our secure Postgres database.</p>
+                    <form id="signup-form">
+                        <input type="text" id="signup-name" placeholder="Full Name" required class="form-input">
+                        <input type="email" id="signup-email" placeholder="Email Address" required class="form-input">
+                        <input type="password" id="signup-password" placeholder="Password (min. 8 characters)" required class="form-input" minlength="8">
+                        <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+                    </form>
+                    <div class="auth-switch">
+                        Already have an account? <a href="#" id="switch-to-signin">Sign In</a>
+                    </div>
                 </div>
             </div>
 

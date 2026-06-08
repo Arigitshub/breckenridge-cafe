@@ -1815,3 +1815,333 @@ footer {
     height: 70%;
     border-radius: 0 0 6px 6px;
 }
+
+/* --- GRAPHICS ENHANCEMENTS & PREMIUM DETAILS --- */
+
+/* About Section Image Overlay */
+.about-image-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    border-radius: 16px;
+    overflow: visible;
+    box-shadow: var(--shadow-soft);
+    margin-bottom: 2rem;
+    transition: transform var(--transition-normal);
+}
+.about-img {
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+    display: block;
+    filter: brightness(0.8) contrast(1.05);
+    border: 1px solid var(--border-color);
+    transition: transform var(--transition-normal), filter var(--transition-normal);
+}
+.about-image-wrapper:hover {
+    transform: translateY(-4px);
+}
+.about-image-wrapper:hover .about-img {
+    filter: brightness(0.9) contrast(1.05);
+}
+.overlay-quote-card {
+    position: absolute;
+    bottom: -30px;
+    right: -40px;
+    width: 85%;
+    height: auto !important;
+    max-width: 380px;
+    padding: 1.75rem !important;
+    z-index: 10;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6) !important;
+    background: rgba(18, 24, 20, 0.85) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    transition: transform var(--transition-normal);
+}
+.about-image-wrapper:hover .overlay-quote-card {
+    transform: translateY(-2px) scale(1.01);
+    border-color: rgba(0, 230, 118, 0.2) !important;
+}
+
+/* Featured Menu Layout with Images */
+.menu-display-container {
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: 3.5rem;
+    align-items: flex-start;
+}
+.menu-featured-row {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+.menu-featured-card {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-soft);
+    background: var(--bg-secondary);
+    transition: var(--transition-normal);
+}
+.menu-featured-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(0, 230, 118, 0.3);
+    box-shadow: 0 15px 35px rgba(0, 230, 118, 0.12);
+}
+.menu-featured-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.6) contrast(1.1);
+    transition: transform var(--transition-normal), filter var(--transition-normal);
+}
+.menu-featured-card:hover .menu-featured-img {
+    transform: scale(1.04);
+    filter: brightness(0.7) contrast(1.1);
+}
+.featured-overlay {
+    position: absolute;
+    inset: 0;
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: linear-gradient(to top, rgba(10, 13, 11, 0.95) 0%, rgba(10, 13, 11, 0.35) 60%, transparent 100%);
+    z-index: 2;
+}
+.featured-badge {
+    align-self: flex-start;
+    background: rgba(0, 230, 118, 0.12);
+    border: 1px solid var(--accent-primary);
+    color: var(--accent-primary);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.3rem 0.75rem;
+    border-radius: 50px;
+    letter-spacing: 0.05em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    box-shadow: 0 2px 8px rgba(0, 230, 118, 0.1);
+}
+.featured-meta h3 {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    color: #fff;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+}
+.featured-meta p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.45;
+    margin-bottom: 0.6rem;
+}
+.featured-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent-secondary);
+}
+
+/* Steam and Droplets in the Lab Visualizer */
+.steam-container {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 5;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+.steam-container.active {
+    opacity: 1;
+}
+.steam-line {
+    width: 4px;
+    height: 25px;
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.35) 0%, transparent 100%);
+    border-radius: 50%;
+    filter: blur(2px);
+    animation: riseSteam 2.5s infinite ease-in-out;
+    transform-origin: bottom center;
+}
+.steam-line:nth-child(2) { animation-delay: 0.4s; height: 35px; animation-duration: 2s; }
+.steam-line:nth-child(3) { animation-delay: 0.8s; height: 28px; animation-duration: 2.2s; }
+
+@keyframes riseSteam {
+    0% { transform: translateY(15px) scaleX(0.8) skewX(-2deg); opacity: 0; }
+    50% { transform: translateY(0) scaleX(1.3) skewX(4deg); opacity: 0.5; }
+    100% { transform: translateY(-25px) scaleX(0.7) skewX(-2deg); opacity: 0; }
+}
+
+.droplets-container {
+    position: absolute;
+    top: 30px;
+    left: calc(50% - 70px);
+    width: 140px;
+    height: 100px;
+    z-index: 6;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+.droplets-container.active {
+    opacity: 1;
+}
+.droplet {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.35);
+    width: 2px;
+    height: 5px;
+    border-radius: 50%;
+    animation: dripDown 5s infinite linear;
+}
+.droplet:nth-child(1) { left: 25%; top: 10%; animation-delay: 0.5s; animation-duration: 4.5s; }
+.droplet:nth-child(2) { left: 55%; top: 25%; animation-delay: 1.8s; animation-duration: 6s; }
+.droplet:nth-child(3) { left: 75%; top: 15%; animation-delay: 3.2s; animation-duration: 5.2s; }
+
+@keyframes dripDown {
+    0% { transform: translateY(0); opacity: 0; height: 3px; }
+    15% { opacity: 0.8; height: 5px; }
+    80% { opacity: 0.6; }
+    100% { transform: translateY(85px); opacity: 0; height: 6px; }
+}
+
+/* Cup pouring animation */
+.cup.pouring .liquid {
+    height: 0% !important;
+}
+.liquid {
+    transition: background-color 0.8s cubic-bezier(0.16, 1, 0.3, 1), color 0.8s ease, height 0.3s cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+/* Micro-reactions on Interactive elements */
+.drink-btn {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.drink-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 6px 20px rgba(0, 230, 118, 0.08);
+    border-color: rgba(0, 230, 118, 0.4);
+}
+.drink-btn:active {
+    transform: translateY(1px) scale(0.97);
+}
+
+.infusion-card {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.infusion-card:hover {
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 6px 20px rgba(0, 230, 118, 0.08);
+    border-color: rgba(0, 230, 118, 0.4);
+}
+.infusion-card:active {
+    transform: translateY(1px) scale(0.98);
+}
+
+/* Auth Switch Sliding Transitions */
+.auth-forms-wrapper {
+    position: relative;
+    min-height: 390px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.auth-form-container {
+    width: 100%;
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    backface-visibility: hidden;
+}
+.auth-form-container.inactive {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-30px) scale(0.97);
+}
+.auth-form-container.active {
+    position: relative;
+    opacity: 1;
+    transform: translateX(0) scale(1);
+}
+
+.modal-content {
+    box-shadow: 0 0 50px rgba(0, 230, 118, 0.06), var(--shadow-soft);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Dynamic Input focus micro-glow */
+.form-input {
+    border: 1px solid var(--border-color);
+    transition: all 0.25s ease;
+}
+.form-input:focus {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 10px rgba(0, 230, 118, 0.15);
+    background-color: rgba(255, 255, 255, 0.04);
+}
+
+/* --- MOBILE & RESPONSIVENESS IMPROVEMENTS --- */
+
+/* Mobile Menu Staggered links animation */
+@media (max-width: 768px) {
+    .nav-menu {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s ease;
+    }
+    .nav-menu.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        left: 0; /* Align full width */
+    }
+    .nav-menu .nav-link, 
+    .nav-menu .nav-btn, 
+    .nav-menu .nav-btn-secondary-auth {
+        opacity: 0;
+        transform: translateY(15px);
+        transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        width: 100%;
+        text-align: center;
+    }
+    .nav-menu.active .nav-link, 
+    .nav-menu.active .nav-btn, 
+    .nav-menu.active .nav-btn-secondary-auth {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .nav-menu.active .nav-link:nth-child(1) { transition-delay: 0.1s; }
+    .nav-menu.active .nav-link:nth-child(2) { transition-delay: 0.14s; }
+    .nav-menu.active .nav-link:nth-child(3) { transition-delay: 0.18s; }
+    .nav-menu.active .nav-link:nth-child(4) { transition-delay: 0.22s; }
+    .nav-menu.active .nav-btn { transition-delay: 0.26s; }
+    .nav-menu.active .nav-btn-secondary-auth { transition-delay: 0.3s; }
+
+    .menu-display-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    .about-image-wrapper {
+        max-width: 100%;
+        margin-bottom: 3rem;
+    }
+    .overlay-quote-card {
+        right: 0;
+        left: 0;
+        bottom: -25px;
+        width: 90%;
+        margin: 0 auto;
+    }
+}

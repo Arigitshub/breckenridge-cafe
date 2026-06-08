@@ -142,12 +142,38 @@ document.addEventListener('DOMContentLoaded', () => {
     // Drink selector event listeners
     drinkButtons.forEach(btn => {
         btn.addEventListener('click', () => {
+            if (btn.classList.contains('active')) return;
+
             drinkButtons.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             
             selectedDrink = btn.querySelector('span').textContent;
             selectedDrinkColor = btn.dataset.color;
-            updateInfusionLiquid();
+            
+            // Pouring/Draining transition effect
+            const cup = document.querySelector('.cup');
+            cup.classList.add('pouring');
+
+            // Button micro-reaction feedback
+            btn.style.transform = 'scale(0.95)';
+            setTimeout(() => btn.style.transform = '', 100);
+
+            setTimeout(() => {
+                updateInfusionLiquid();
+                cup.classList.remove('pouring');
+                
+                // Toggle Steam vs Droplets based on beverage temperature
+                const steam = document.getElementById('steam-container');
+                const droplets = document.getElementById('droplets-container');
+                
+                if (selectedDrink === 'Cold Brew') {
+                    if (steam) steam.classList.remove('active');
+                    if (droplets) droplets.classList.add('active');
+                } else {
+                    if (steam) steam.classList.add('active');
+                    if (droplets) droplets.classList.remove('active');
+                }
+            }, 300);
         });
     });
 
@@ -262,7 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedBlendsCard = document.getElementById('saved-blends-card');
     const savedBlendsList = document.getElementById('saved-blends-list');
 
-    const authBaseUrl = 'https://ep-rapid-haze-aqjqgb95.neonauth.us-east-1.aws.neon.tech/neondb/auth';
+    const authBaseUrl = '/api';
 
     // State Variables
     let currentUser = JSON.parse(localStorage.getItem('neon_auth_user')) || null;
@@ -307,8 +333,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (switchToSignup) {
         switchToSignup.addEventListener('click', (e) => {
             e.preventDefault();
-            signinFormContainer.style.display = 'none';
-            signupFormContainer.style.display = 'block';
+            signinFormContainer.classList.add('inactive');
+            signinFormContainer.classList.remove('active');
+            signupFormContainer.classList.add('active');
+            signupFormContainer.classList.remove('inactive');
             authErrorMsg.style.display = 'none';
         });
     }
@@ -316,8 +344,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (switchToSignin) {
         switchToSignin.addEventListener('click', (e) => {
             e.preventDefault();
-            signupFormContainer.style.display = 'none';
-            signinFormContainer.style.display = 'block';
+            signupFormContainer.classList.add('inactive');
+            signupFormContainer.classList.remove('active');
+            signinFormContainer.classList.add('active');
+            signinFormContainer.classList.remove('inactive');
             authErrorMsg.style.display = 'none';
         });
     }
@@ -366,7 +396,7 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.textContent = 'Creating Account...';
 
             try {
-                const res = await fetch(`${authBaseUrl}/sign-up/email`, {
+                const res = await fetch(`${authBaseUrl}/signup`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password, name })
@@ -375,7 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await res.json();
 
                 if (!res.ok) {
-                    throw new Error(data.message || 'Signup failed');
+                    throw new Error(data.error || data.message || 'Signup failed');
                 }
 
                 // If signup logs us in automatically
@@ -388,8 +418,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     updateAuthUI();
                 } else {
                     // Switch to sign in form
-                    signupFormContainer.style.display = 'none';
-                    signinFormContainer.style.display = 'block';
+                    signupFormContainer.classList.add('inactive');
+                    signupFormContainer.classList.remove('active');
+                    signinFormContainer.classList.add('active');
+                    signinFormContainer.classList.remove('inactive');
                     authErrorMsg.style.display = 'block';
                     authErrorMsg.className = 'auth-error-message';
                     authErrorMsg.style.backgroundColor = 'rgba(0, 230, 118, 0.08)';
@@ -421,7 +453,7 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.textContent = 'Signing In...';
 
             try {
-                const res = await fetch(`${authBaseUrl}/sign-in/email`, {
+                const res = await fetch(`${authBaseUrl}/signin`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
@@ -430,7 +462,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await res.json();
 
                 if (!res.ok) {
-                    throw new Error(data.message || 'Invalid email or password');
+                    throw new Error(data.error || data.message || 'Invalid email or password');
                 }
 
                 if (data.session && data.user) {
@@ -459,7 +491,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!currentUser) return;
         
         try {
-            await fetch(`${authBaseUrl}/sign-out`, {
+            await fetch(`${authBaseUrl}/signout`, {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',
