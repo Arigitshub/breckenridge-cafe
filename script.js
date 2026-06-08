@@ -108,6 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateInfusionLiquid() {
         liquidColor.style.backgroundColor = selectedDrinkColor;
+        liquidColor.style.color = selectedDrinkColor;
         
         // Update readout text
         blendName.textContent = `${selectedDrink} + ${selectedInfusionText}`;
