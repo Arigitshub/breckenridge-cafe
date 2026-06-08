@@ -42,6 +42,7 @@
                 <a href="#infusion-lab" class="nav-link">Infusion Lab</a>
                 <a href="#visit" class="nav-link">Hours & Location</a>
                 <a href="#shop" class="nav-btn">Shop CBD</a>
+                <a href="#" id="auth-nav-btn" class="nav-btn-secondary-auth"><i class="fa-solid fa-user"></i> Sign In</a>
             </nav>
         </div>
     </header>
@@ -151,6 +152,8 @@
                             <div class="metric"><span class="metric-label">Focus</span><span id="metric-focus">Medium</span></div>
                             <div class="metric"><span class="metric-label">Energy</span><span id="metric-energy">Medium</span></div>
                         </div>
+                        <button id="save-blend-btn" class="btn btn-secondary btn-block" style="margin-top: 1.25rem;"><i class="fa-solid fa-bookmark"></i> Save Blend to Database</button>
+                        <p id="save-blend-status" style="margin-top: 0.5rem; font-size: 0.85rem; text-align: center; display: none;"></p>
                     </div>
                 </div>
 
@@ -199,6 +202,15 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            
+            <!-- Saved Blends Section -->
+            <div class="saved-blends-section glass-card" id="saved-blends-card" style="display: none; margin-top: 3rem; width: 100%; padding: 2rem;">
+                <h3><i class="fa-solid fa-bookmark" style="color: var(--accent-secondary); margin-right: 0.5rem;"></i> Your Saved Blends</h3>
+                <p style="margin-bottom: 1.5rem; font-size: 0.95rem;">Successfully connected to your Neon Postgres database. Here are your custom creations:</p>
+                <div class="saved-blends-grid" id="saved-blends-list">
+                    <!-- Dynamically filled with JS -->
                 </div>
             </div>
         </div>
@@ -469,6 +481,44 @@
 
     <!-- Back to Top Button -->
     <a href="#" id="back-to-top" aria-label="Back to Top"><i class="fa-solid fa-arrow-up"></i></a>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content glass-card">
+            <button class="modal-close" id="auth-modal-close">&times;</button>
+            
+            <!-- Sign In Form -->
+            <div id="signin-form-container">
+                <h3>Welcome Back</h3>
+                <p>Sign in with your Neon Auth account to save your favorite custom infusions and access premium wellness features.</p>
+                <form id="signin-form">
+                    <input type="email" id="signin-email" placeholder="Email Address" required class="form-input">
+                    <input type="password" id="signin-password" placeholder="Password" required class="form-input">
+                    <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                </form>
+                <div class="auth-switch">
+                    Don't have an account? <a href="#" id="switch-to-signup">Create Account</a>
+                </div>
+            </div>
+
+            <!-- Sign Up Form -->
+            <div id="signup-form-container" style="display: none;">
+                <h3>Create Account</h3>
+                <p>Register to save your customized drinks directly to our secure Postgres database.</p>
+                <form id="signup-form">
+                    <input type="text" id="signup-name" placeholder="Full Name" required class="form-input">
+                    <input type="email" id="signup-email" placeholder="Email Address" required class="form-input">
+                    <input type="password" id="signup-password" placeholder="Password (min. 8 characters)" required class="form-input" minlength="8">
+                    <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+                </form>
+                <div class="auth-switch">
+                    Already have an account? <a href="#" id="switch-to-signin">Sign In</a>
+                </div>
+            </div>
+
+            <div id="auth-error-msg" class="auth-error-message" style="display: none;"></div>
+        </div>
+    </div>
 
     <!-- Leaflet CSS and JS for Interactive Map -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
