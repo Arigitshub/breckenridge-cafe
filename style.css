@@ -2774,3 +2774,114 @@ footer {
         grid-column: span 1;
     }
 }
+
+/* --- AMBIENT GLOWS & PREMIUM INTERACTIVE EFFECTS --- */
+
+/* Ambient Background Glows */
+.ambient-glow {
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(140px);
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: -1;
+    will-change: transform;
+}
+.glow-1 {
+    background: radial-gradient(circle, var(--accent-primary) 0%, transparent 70%);
+    top: -10%;
+    left: -10%;
+    animation: floatGlow1 25s infinite alternate ease-in-out;
+}
+.glow-2 {
+    background: radial-gradient(circle, var(--accent-secondary) 0%, transparent 70%);
+    bottom: -10%;
+    right: -10%;
+    animation: floatGlow2 20s infinite alternate ease-in-out;
+}
+
+@keyframes floatGlow1 {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(100px, 80px) scale(1.1); }
+    100% { transform: translate(-50px, 120px) scale(0.9); }
+}
+@keyframes floatGlow2 {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-120px, -60px) scale(0.95); }
+    100% { transform: translate(80px, 40px) scale(1.05); }
+}
+
+/* Shimmer effect for premium glass cards */
+.glass-card {
+    position: relative;
+    overflow: hidden;
+}
+.glass-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.03) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: skewX(-25deg);
+    transition: 0.75s;
+    pointer-events: none;
+    z-index: 2;
+}
+.glass-card:hover::after {
+    left: 150%;
+    transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Cart Wiggle and Floating +1 indicator */
+.cart-wiggle {
+    animation: cartBounce 0.5s ease-in-out;
+}
+@keyframes cartBounce {
+    0% { transform: scale(1); }
+    20% { transform: scale(1.2) rotate(-10deg); }
+    40% { transform: scale(1.2) rotate(10deg); }
+    60% { transform: scale(1.2) rotate(-5deg); }
+    80% { transform: scale(1.2) rotate(5deg); }
+    100% { transform: scale(1); }
+}
+
+.floating-plus-one {
+    position: fixed;
+    color: var(--accent-primary);
+    font-weight: 700;
+    font-size: 1.15rem;
+    pointer-events: none;
+    z-index: 9999;
+    animation: floatUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    text-shadow: 0 0 10px rgba(0, 230, 118, 0.6);
+}
+@keyframes floatUpFade {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-60px);
+        opacity: 0;
+    }
+}
+
+/* Pulse glow gradient style on active state cards/buttons */
+.drink-btn.active, .infusion-card.active {
+    box-shadow: 0 0 15px rgba(0, 230, 118, 0.15), inset 0 0 10px rgba(0, 230, 118, 0.05);
+    animation: activeStatePulse 2s infinite ease-in-out;
+}
+@keyframes activeStatePulse {
+    0% { border-color: var(--accent-primary); box-shadow: 0 0 8px rgba(0, 230, 118, 0.1); }
+    50% { border-color: #00ff88; box-shadow: 0 0 18px rgba(0, 255, 136, 0.25); }
+    100% { border-color: var(--accent-primary); box-shadow: 0 0 8px rgba(0, 230, 118, 0.1); }
+}

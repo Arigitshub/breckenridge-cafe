@@ -1008,6 +1008,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 saveCart();
                 toggleCart(true);
                 showToast(`Added ${name} to cart!`, 'success');
+
+                // Bounce wiggle on cart icon
+                if (cartNavBtn) {
+                    cartNavBtn.classList.remove('cart-wiggle');
+                    void cartNavBtn.offsetWidth; // force reflow
+                    cartNavBtn.classList.add('cart-wiggle');
+                }
+
+                // Create floating +1 badge
+                const plusOne = document.createElement('div');
+                plusOne.className = 'floating-plus-one';
+                plusOne.textContent = '+1';
+                
+                const rect = addBtn.getBoundingClientRect();
+                plusOne.style.left = `${rect.left + rect.width / 2}px`;
+                plusOne.style.top = `${rect.top}px`;
+                document.body.appendChild(plusOne);
+                
+                setTimeout(() => plusOne.remove(), 800);
             });
         }
     });
