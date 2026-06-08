@@ -1,13 +1,47 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. HEADER SCROLL EFFECT
+    // 0. PRELOADER FADE OUT
+    const preloader = document.getElementById('preloader');
+    window.addEventListener('load', () => {
+        preloader.classList.add('fade-out');
+    });
+    // Fallback: fade out if load takes longer than 2s
+    setTimeout(() => {
+        if (preloader && !preloader.classList.contains('fade-out')) {
+            preloader.classList.add('fade-out');
+        }
+    }, 2000);
+
+    // 1. HEADER SCROLL EFFECT & BACK TO TOP BUTTON
     const navbar = document.querySelector('.navbar');
+    const backToTopBtn = document.getElementById('back-to-top');
+    
     window.addEventListener('scroll', () => {
+        // Sticky Header
         if (window.scrollY > 50) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
         }
+
+        // Back to top button
+        if (backToTopBtn) {
+            if (window.scrollY > 400) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        }
     });
+
+    if (backToTopBtn) {
+        backToTopBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
 
     // 2. MOBILE NAVIGATION TOGGLE
     const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
@@ -183,6 +217,8 @@ document.addEventListener('DOMContentLoaded', () => {
             center: coordinate,
             zoom: 15,
             scrollWheelZoom: false,
+            dragging: !L.Browser.mobile,
+            tap: !L.Browser.mobile,
             zoomControl: true
         });
 

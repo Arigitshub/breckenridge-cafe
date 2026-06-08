@@ -30,6 +30,7 @@
 
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 80px;
     font-size: 16px;
     background-color: var(--bg-primary);
     color: var(--text-primary);
@@ -1298,5 +1299,155 @@ footer {
         flex-direction: column;
         gap: 1rem;
         padding: 0 2rem;
+    }
+}
+
+/* PRELOADER SCREEN */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg-primary);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+#preloader.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader-content {
+    text-align: center;
+}
+
+.loader-logo {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+}
+
+.loader-logo .logo-text {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #fff;
+}
+
+.loader-logo .logo-sub {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--accent-primary);
+    letter-spacing: 0.25em;
+    margin-top: 5px;
+}
+
+.loader-bar {
+    width: 140px;
+    height: 3px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.loader-bar::after {
+    content: '';
+    display: block;
+    width: 40%;
+    height: 100%;
+    background-color: var(--accent-primary);
+    border-radius: 4px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: loaderLoading 1.5s infinite ease-in-out;
+}
+
+@keyframes loaderLoading {
+    0% { left: -40%; }
+    50% { left: 100%; }
+    100% { left: 100%; }
+}
+
+/* BACK TO TOP BUTTON */
+#back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background-color: rgba(18, 24, 20, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border-color);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-primary);
+    text-decoration: none;
+    font-size: 1.1rem;
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: var(--shadow-soft);
+}
+
+#back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+#back-to-top:hover {
+    background-color: var(--accent-primary);
+    color: #000;
+    border-color: var(--accent-primary);
+    box-shadow: var(--shadow-glow);
+    transform: scale(1.05) translateY(-2px);
+}
+
+#back-to-top:active {
+    transform: scale(0.95) translateY(0);
+}
+
+/* MOBILE TOUCH OPTIMIZATIONS & SAFE AREA NOTCHES */
+@media (max-width: 768px) {
+    .navbar {
+        padding-top: max(0.5rem, env(safe-area-inset-top));
+    }
+    
+    .nav-menu {
+        padding-top: calc(3rem + env(safe-area-inset-top));
+        padding-bottom: max(2rem, env(safe-area-inset-bottom));
+        height: 100vh;
+        top: 0;
+        z-index: -1;
+    }
+    
+    /* Ensure minimal touch sizes */
+    .nav-link, .menu-tab-btn, .btn, .drink-btn, .infusion-card {
+        min-height: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .drink-options {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+
+    .drink-btn {
+        padding: 0.75rem;
+        font-size: 0.9rem;
     }
 }
