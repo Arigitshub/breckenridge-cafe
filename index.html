@@ -198,7 +198,10 @@
                             <div class="metric"><span class="metric-label">Focus</span><span id="metric-focus">Medium</span></div>
                             <div class="metric"><span class="metric-label">Energy</span><span id="metric-energy">Medium</span></div>
                         </div>
-                        <button id="save-blend-btn" class="btn btn-secondary btn-block" style="margin-top: 1.25rem;"><i class="fa-solid fa-bookmark"></i> Save Blend to Database</button>
+                        <div class="lab-btn-row" style="margin-top: 1.25rem; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 0.75rem;">
+                            <button id="save-blend-btn" class="btn btn-secondary" style="font-size: 0.88rem; padding: 0.75rem 1rem;"><i class="fa-solid fa-bookmark"></i> Save to DB</button>
+                            <button id="share-blend-btn" class="btn btn-secondary-share" style="font-size: 0.88rem; padding: 0.75rem 1rem;"><i class="fa-solid fa-share-nodes"></i> Share</button>
+                        </div>
                         <p id="save-blend-status" style="margin-top: 0.5rem; font-size: 0.85rem; text-align: center; display: none;"></p>
                     </div>
                 </div>
@@ -278,10 +281,24 @@
                 <button class="menu-tab-btn" data-tab="shop">Hemp & Wellness Shop</button>
             </div>
 
+            <!-- Search & Filter Controls -->
+            <div class="menu-controls-bar">
+                <div class="menu-search-wrapper">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="menu-search" class="menu-search-input" placeholder="Search menu...">
+                </div>
+                <div class="menu-filter-tags">
+                    <button class="filter-tag-btn active" data-filter="all">All Items</button>
+                    <button class="filter-tag-btn" data-filter="organic">Organic</button>
+                    <button class="filter-tag-btn" data-filter="vegan">Vegan</button>
+                    <button class="filter-tag-btn" data-filter="gf">Gluten-Free</button>
+                </div>
+            </div>
+
             <!-- Tab Content: Drinks -->
             <div class="menu-content active" id="tab-drinks">
                 <div class="menu-display-container">
-                    <div class="menu-featured-card glass-card">
+                    <div class="menu-featured-card glass-card" data-tags="organic vegan gf">
                         <img src="assets/images/matcha_latte.png" alt="Barista Choice Matcha Latte" class="menu-featured-img">
                         <div class="featured-overlay">
                             <span class="featured-badge"><i class="fa-solid fa-star"></i> Barista Choice</span>
@@ -293,35 +310,35 @@
                         </div>
                     </div>
                     <div class="menu-grid">
-                        <div class="menu-item">
+                        <div class="menu-item" data-tags="organic">
                             <div class="menu-item-hdr">
                                 <span class="menu-item-title">Peak 7 Drip Coffee</span>
                                 <span class="menu-item-price">$4.50</span>
                             </div>
                             <p class="menu-item-desc">Organic dark roast, bold and rich flavor profile, brewed fresh hourly.</p>
                         </div>
-                        <div class="menu-item">
+                        <div class="menu-item" data-tags="organic">
                             <div class="menu-item-hdr">
                                 <span class="menu-item-title">BG Signature Espresso</span>
                                 <span class="menu-item-price">$4.00</span>
                             </div>
                             <p class="menu-item-desc">Double shot of our custom medium-roast house blend with notes of cacao and hazelnut.</p>
                         </div>
-                        <div class="menu-item">
+                        <div class="menu-item" data-tags="organic vegan">
                             <div class="menu-item-hdr">
                                 <span class="menu-item-title">Nitro Cold Brew</span>
                                 <span class="menu-item-price">$5.50</span>
                             </div>
                             <p class="menu-item-desc">Infused with nitrogen for a velvety, creamy mouthfeel and natural sweetness.</p>
                         </div>
-                        <div class="menu-item">
+                        <div class="menu-item" data-tags="organic vegan gf">
                             <div class="menu-item-hdr">
                                 <span class="menu-item-title">Iced Rosewater Tea</span>
                                 <span class="menu-item-price">$5.00</span>
                             </div>
                             <p class="menu-item-desc">Fragrant herbal tea with organic rose petals, hibiscus, and a hint of lime.</p>
                         </div>
-                        <div class="menu-item">
+                        <div class="menu-item" data-tags="organic gf">
                             <div class="menu-item-hdr">
                                 <span class="menu-item-title">Golden Turmeric Latte</span>
                                 <span class="menu-item-price">$6.00</span>
@@ -336,7 +353,7 @@
             <div class="menu-content" id="tab-eats">
                 <div class="menu-display-container">
                     <div class="menu-featured-row">
-                        <div class="menu-featured-card glass-card">
+                        <div class="menu-featured-card glass-card" data-tags="sweet">
                             <img src="assets/images/nutella_crepe.png" alt="House Special Nutella & Berries Crepe" class="menu-featured-img">
                             <div class="featured-overlay">
                                 <span class="featured-badge"><i class="fa-solid fa-fire"></i> House Special</span>
@@ -347,7 +364,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="menu-featured-card glass-card">
+                        <div class="menu-featured-card glass-card" data-tags="organic vegan gf">
                             <img src="assets/images/acai_bowl.png" alt="Wellness Pick Acai Bowl" class="menu-featured-img">
                             <div class="featured-overlay">
                                 <span class="featured-badge"><i class="fa-solid fa-seedling"></i> Wellness Pick</span>
@@ -360,28 +377,28 @@
                         </div>
                     </div>
                     <div class="menu-grid">
-                        <div class="menu-item">
+                        <div class="menu-item" data-tags="savory organic">
                             <div class="menu-item-hdr">
                                 <span class="menu-item-title">Goat Cheese & Spinach Crepe</span>
                                 <span class="menu-item-price">$14.00</span>
                             </div>
                             <p class="menu-item-desc">Savory house crepe, organic goat cheese, baby spinach, roasted pine nuts, and balsamic glaze.</p>
                         </div>
-                        <div class="menu-item">
+                        <div class="menu-item" data-tags="savory">
                             <div class="menu-item-hdr">
                                 <span class="menu-item-title">Smoked Salmon Crepe</span>
                                 <span class="menu-item-price">$16.50</span>
                             </div>
                             <p class="menu-item-desc">Savory crepe with wild-caught smoked salmon, cream cheese, capers, dill, and thinly sliced red onions.</p>
                         </div>
-                        <div class="menu-item">
+                        <div class="menu-item" data-tags="vegan gf">
                             <div class="menu-item-hdr">
                                 <span class="menu-item-title">Williamsburg Vegan Muffin</span>
                                 <span class="menu-item-price">$4.75</span>
                             </div>
                             <p class="menu-item-desc">Gluten-free, vegan baked muffin made daily. Ask your barista for today's seasonal fruit flavor.</p>
                         </div>
-                        <div class="menu-item">
+                        <div class="menu-item" data-tags="vegan organic">
                             <div class="menu-item-hdr">
                                 <span class="menu-item-title">Avocado Toast Crepe</span>
                                 <span class="menu-item-price">$13.50</span>
@@ -598,6 +615,14 @@
                     <li><a href="#infusion-lab">Infusion Lab</a></li>
                     <li><a href="#visit">Location</a></li>
                 </ul>
+            </div>
+            <div class="footer-newsletter-col">
+                <h4>Newsletter</h4>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.4;">Subscribe for 15% off first order and exclusive event invites.</p>
+                <form id="newsletter-form" class="footer-newsletter-form">
+                    <input type="email" id="newsletter-email" placeholder="Your email address..." required class="form-input" style="margin-bottom: 0.5rem; font-size: 0.85rem; padding: 0.5rem 1rem;">
+                    <button type="submit" class="btn btn-primary btn-block" style="padding: 0.5rem 1rem; font-size: 0.85rem; border-radius: 4px;">Subscribe</button>
+                </form>
             </div>
             <div class="footer-legal">
                 <h4>FDA Disclaimer</h4>

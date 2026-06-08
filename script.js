@@ -82,7 +82,89 @@ document.addEventListener('DOMContentLoaded', () => {
             const activeTab = document.getElementById(tabId);
             if (activeTab) {
                 activeTab.classList.add('active');
+                applyMenuFilter();
             }
+        });
+    });
+
+    // 3b. MENU SEARCH & FILTER SYSTEM
+    const menuSearch = document.getElementById('menu-search');
+    const filterTagButtons = document.querySelectorAll('.filter-tag-btn');
+
+    function applyMenuFilter() {
+        const searchText = menuSearch ? menuSearch.value.toLowerCase().trim() : '';
+        const activeFilterBtn = document.querySelector('.filter-tag-btn.active');
+        const activeFilter = activeFilterBtn ? activeFilterBtn.dataset.filter : 'all';
+        
+        // Find all items within the active menu tab
+        const activeTab = document.querySelector('.menu-content.active');
+        if (!activeTab) return;
+        
+        const items = activeTab.querySelectorAll('.menu-item, .menu-featured-card, .shop-card');
+        
+        items.forEach(item => {
+            let title = '';
+            let desc = '';
+            
+            if (item.classList.contains('menu-item')) {
+                const titleEl = item.querySelector('.menu-item-title');
+                const descEl = item.querySelector('.menu-item-desc');
+                title = titleEl ? titleEl.textContent.toLowerCase() : '';
+                desc = descEl ? descEl.textContent.toLowerCase() : '';
+            } else if (item.classList.contains('menu-featured-card')) {
+                const titleEl = item.querySelector('.featured-meta h3');
+                const descEl = item.querySelector('.featured-meta p');
+                title = titleEl ? titleEl.textContent.toLowerCase() : '';
+                desc = descEl ? descEl.textContent.toLowerCase() : '';
+            } else if (item.classList.contains('shop-card')) {
+                const titleEl = item.querySelector('h3');
+                const descEl = item.querySelector('.shop-card-desc');
+                title = titleEl ? titleEl.textContent.toLowerCase() : '';
+                desc = descEl ? descEl.textContent.toLowerCase() : '';
+            }
+            
+            // Check tag match
+            let matchesTag = false;
+            if (activeFilter === 'all') {
+                matchesTag = true;
+            } else {
+                const tagsAttr = item.getAttribute('data-tags');
+                if (tagsAttr) {
+                    const tags = tagsAttr.split(' ');
+                    matchesTag = tags.includes(activeFilter);
+                } else {
+                    // Fallback for elements without explicit data-tags (like shop items): check if name or description contains the tag keyword
+                    const searchKeywords = {
+                        'organic': ['organic'],
+                        'vegan': ['vegan'],
+                        'gf': ['gluten-free', 'gf', 'gluten free']
+                    };
+                    const keywords = searchKeywords[activeFilter] || [activeFilter];
+                    matchesTag = keywords.some(kw => title.includes(kw) || desc.includes(kw));
+                }
+            }
+            
+            // Check text match
+            const matchesSearch = title.includes(searchText) || desc.includes(searchText);
+            
+            // Apply display
+            if (matchesTag && matchesSearch) {
+                item.style.display = '';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+
+    if (menuSearch) {
+        menuSearch.addEventListener('input', applyMenuFilter);
+    }
+
+    filterTagButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterTagButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            applyMenuFilter();
         });
     });
 
@@ -210,6 +292,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial infusion liquid draw
     updateInfusionLiquid();
 
+    // URL Query Loader - restore custom shared blends on DOM load
+    function loadBlendFromURL() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const drinkParam = urlParams.get('drink');
+        const infusionParam = urlParams.get('infusion');
+
+        if (drinkParam) {
+            const drinkBtn = document.querySelector(`.drink-btn[data-drink="${drinkParam}"]`);
+            if (drinkBtn) {
+                drinkBtn.click();
+            }
+        }
+        if (infusionParam) {
+            const infusionCard = document.querySelector(`.infusion-card[data-level="${infusionParam}"]`);
+            if (infusionCard) {
+                infusionCard.click();
+            }
+        }
+    }
+    loadBlendFromURL();
+
     // 5. CONTACT FORM MOCK SUBMISSION
     const contactForm = document.getElementById('contact-form');
     const formSuccess = document.getElementById('form-success');
@@ -235,6 +338,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 showToast('Inquiry sent successfully!', 'success');
             }, 800);
+        });
+    }
+
+    // 5b. NEWSLETTER FORM SUBMISSION
+    const newsletterForm = document.getElementById('newsletter-form');
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const emailInput = document.getElementById('newsletter-email');
+            const email = emailInput ? emailInput.value : '';
+            
+            showToast(`Thank you! Subscribed ${email} to our newsletter.`, 'success');
+            if (emailInput) {
+                emailInput.value = '';
+            }
         });
     }
 
@@ -561,6 +679,27 @@ document.addEventListener('DOMContentLoaded', () => {
             } finally {
                 saveBlendBtn.disabled = false;
             }
+        });
+    }
+
+    // Share Custom Blend via clipboard URL
+    const shareBlendBtn = document.getElementById('share-blend-btn');
+    if (shareBlendBtn) {
+        shareBlendBtn.addEventListener('click', () => {
+            const activeDrinkBtn = document.querySelector('.drink-btn.active');
+            const activeInfusionCard = document.querySelector('.infusion-card.active');
+            
+            const drinkVal = activeDrinkBtn ? activeDrinkBtn.dataset.drink : '';
+            const infusionVal = activeInfusionCard ? activeInfusionCard.dataset.level : '';
+            
+            const shareUrl = `${window.location.origin}${window.location.pathname}?drink=${encodeURIComponent(drinkVal)}&infusion=${encodeURIComponent(infusionVal)}`;
+            
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                showToast('Share link copied to clipboard!', 'success');
+            }).catch(err => {
+                console.error('Failed to copy share link: ', err);
+                showToast('Failed to copy link. Please copy from URL bar.', 'error');
+            });
         });
     }
 
