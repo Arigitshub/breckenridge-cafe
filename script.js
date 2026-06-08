@@ -1046,4 +1046,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize cart render
     renderCart();
+
+    // 8. 3D TILT EFFECT ON PREMIUM GLASS CARDS
+    const tiltCards = document.querySelectorAll('.shop-card, .menu-featured-card');
+    tiltCards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left; // x position within element
+            const y = e.clientY - rect.top;  // y position within element
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            // Limit max tilt to 8 degrees for natural, subtle feel
+            const rotateX = ((centerY - y) / centerY) * 8;
+            const rotateY = ((x - centerX) / centerX) * 8;
+            
+            // Set 3D transform properties
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
+            card.style.transition = 'transform 0.05s ease';
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = '';
+            card.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+        });
+    });
 });

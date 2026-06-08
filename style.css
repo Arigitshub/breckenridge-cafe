@@ -202,6 +202,13 @@ p {
     flex-direction: column;
     text-decoration: none;
     color: var(--text-primary);
+    transition: var(--transition-normal);
+}
+
+.logo:hover .logo-text {
+    letter-spacing: 0.15em;
+    color: var(--accent-primary);
+    text-shadow: 0 0 15px rgba(0, 230, 118, 0.4);
 }
 
 .logo-text {
@@ -210,6 +217,7 @@ p {
     font-size: 1.3rem;
     letter-spacing: 0.1em;
     line-height: 1;
+    transition: letter-spacing 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s ease, text-shadow 0.4s ease;
 }
 
 .logo-sub {
@@ -2434,6 +2442,18 @@ footer {
     align-items: center;
     padding-bottom: 1.5rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    animation: cartItemSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes cartItemSlideIn {
+    0% {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 .cart-item-img-container {
     width: 65px;
