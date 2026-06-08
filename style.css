@@ -38,6 +38,24 @@ html {
     -webkit-font-smoothing: antialiased;
 }
 
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #080b09;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 230, 118, 0.2);
+    border-radius: 4px;
+    border: 2px solid #080b09;
+    transition: var(--transition-fast);
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 230, 118, 0.45);
+}
+
 body {
     overflow-x: hidden;
     line-height: 1.6;
@@ -937,10 +955,20 @@ p {
     gap: 2rem;
 }
 
+/* Shop product cards */
 .shop-card {
     display: flex;
     flex-direction: column;
     height: 100%;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.shop-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(0, 230, 118, 0.2);
+    box-shadow: 0 12px 30px rgba(0, 230, 118, 0.08);
 }
 
 .shop-img-holder {
@@ -2021,6 +2049,46 @@ footer {
 }
 .liquid {
     transition: background-color 0.8s cubic-bezier(0.16, 1, 0.3, 1), color 0.8s ease, height 0.3s cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+/* Pouring liquid stream animation */
+.pouring-stream {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 0;
+    background-color: var(--stream-color, #3d2314);
+    opacity: 0;
+    z-index: 5;
+    pointer-events: none;
+    border-radius: 3px;
+    box-shadow: 0 0 8px var(--stream-color, #3d2314);
+    transition: background-color 0.3s ease;
+}
+
+.pouring-stream.active {
+    animation: streamPour 0.35s ease-in-out;
+}
+
+@keyframes streamPour {
+    0% {
+        height: 0;
+        opacity: 0;
+    }
+    30% {
+        height: 160px;
+        opacity: 0.85;
+    }
+    70% {
+        height: 160px;
+        opacity: 0.85;
+    }
+    100% {
+        height: 0;
+        opacity: 0;
+    }
 }
 
 /* Micro-reactions on Interactive elements */

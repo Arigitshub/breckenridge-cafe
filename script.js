@@ -168,6 +168,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // 3c. SHOP NAVIGATION LINK AUTO-SWITCH
+    const shopLinks = document.querySelectorAll('a[href="#shop"]');
+    shopLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const menuSection = document.getElementById('menu');
+            if (menuSection) {
+                menuSection.scrollIntoView({ behavior: 'smooth' });
+            }
+            const shopTabBtn = document.querySelector('.menu-tab-btn[data-tab="shop"]');
+            if (shopTabBtn) {
+                shopTabBtn.click();
+            }
+        });
+    });
+
     // 4. INTERACTIVE INFUSION LAB
     const drinkButtons = document.querySelectorAll('.drink-btn');
     const infusionCards = document.querySelectorAll('.infusion-card');
@@ -234,6 +250,15 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Pouring/Draining transition effect
             const cup = document.querySelector('.cup');
+            const stream = document.getElementById('pouring-stream');
+            
+            if (stream) {
+                stream.style.setProperty('--stream-color', selectedDrinkColor);
+                stream.classList.remove('active');
+                void stream.offsetWidth; // force layout reflow
+                stream.classList.add('active');
+            }
+            
             cup.classList.add('pouring');
 
             // Button micro-reaction feedback
