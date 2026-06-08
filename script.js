@@ -288,7 +288,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedBlendsCard = document.getElementById('saved-blends-card');
     const savedBlendsList = document.getElementById('saved-blends-list');
 
-    const authBaseUrl = '/api';
+    // Set dynamic api base url depending on host (Vercel vs static hosts like Surge/localhost)
+    const isVercel = window.location.hostname.includes('vercel.app');
+    const authBaseUrl = isVercel ? '/api' : 'https://breckenridge-cafe.vercel.app/api';
 
     // State Variables
     let currentUser = JSON.parse(localStorage.getItem('neon_auth_user')) || null;
@@ -528,7 +530,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const email = currentUser.email;
 
             try {
-                const res = await fetch('/api/save-blend', {
+                const res = await fetch(`${authBaseUrl}/save-blend`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, drink, infusion })
@@ -562,7 +564,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!currentUser) return;
 
         try {
-            const res = await fetch(`/api/get-blends?email=${encodeURIComponent(currentUser.email)}`);
+            const res = await fetch(`${authBaseUrl}/get-blends?email=${encodeURIComponent(currentUser.email)}`);
             if (!res.ok) {
                 throw new Error('Failed to retrieve blends.');
             }
