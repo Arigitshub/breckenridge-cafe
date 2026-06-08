@@ -233,6 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     formSuccess.style.opacity = '1';
                     formSuccess.style.transform = 'translateY(0)';
                 });
+                showToast('Inquiry sent successfully!', 'success');
             }, 800);
         });
     }
@@ -418,6 +419,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.setItem('neon_auth_token', currentSessionToken);
                     toggleModal(false);
                     updateAuthUI();
+                    showToast(`Welcome, ${currentUser.name || currentUser.email}! Account created.`, 'success');
                 } else {
                     // Switch to sign in form
                     signupFormContainer.classList.add('inactive');
@@ -474,6 +476,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.setItem('neon_auth_token', currentSessionToken);
                     toggleModal(false);
                     updateAuthUI();
+                    showToast(`Welcome back, ${currentUser.name}!`, 'success');
                 } else {
                     throw new Error('Invalid response structure from authentication server.');
                 }
@@ -508,6 +511,7 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.removeItem('neon_auth_user');
             localStorage.removeItem('neon_auth_token');
             updateAuthUI();
+            showToast('Signed out successfully', 'info');
         }
     }
 
@@ -546,6 +550,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Refresh list
                 fetchSavedBlends();
+                showToast('Infusion blend saved to database!', 'success');
 
                 setTimeout(() => {
                     saveBlendStatus.style.display = 'none';
@@ -604,4 +609,258 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize Auth UI state
     updateAuthUI();
+
+    // --- TOAST NOTIFICATION SYSTEM ---
+    function showToast(message, type = 'success') {
+        const toastContainer = document.getElementById('toast-container');
+        if (!toastContainer) return;
+
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        
+        let iconClass = 'fa-circle-check';
+        if (type === 'error') iconClass = 'fa-circle-xmark';
+        if (type === 'info') iconClass = 'fa-circle-info';
+
+        toast.innerHTML = `<i class="fa-solid ${iconClass}"></i><span>${message}</span>`;
+        toastContainer.appendChild(toast);
+
+        // Animate entrance
+        requestAnimationFrame(() => {
+            toast.classList.add('show');
+        });
+
+        // Auto remove
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                toast.remove();
+            }, 400);
+        }, 3000);
+    }
+
+    // --- TESTIMONIAL SLIDER ---
+    const slides = document.querySelectorAll('.testimonial-slide');
+    const dots = document.querySelectorAll('.test-dot');
+    const prevBtn = document.querySelector('.test-control-btn.prev');
+    const nextBtn = document.querySelector('.test-control-btn.next');
+    let activeTestimonialIndex = 0;
+
+    function showTestimonial(index) {
+        if (slides.length === 0) return;
+        
+        slides.forEach(slide => {
+            slide.classList.remove('active');
+            slide.style.display = 'none';
+        });
+        dots.forEach(dot => dot.classList.remove('active'));
+
+        activeTestimonialIndex = (index + slides.length) % slides.length;
+        
+        slides[activeTestimonialIndex].style.display = 'block';
+        slides[activeTestimonialIndex].offsetHeight; // Trigger reflow for animation
+        slides[activeTestimonialIndex].classList.add('active');
+        dots[activeTestimonialIndex].classList.add('active');
+    }
+
+    if (prevBtn && nextBtn) {
+        prevBtn.addEventListener('click', () => showTestimonial(activeTestimonialIndex - 1));
+        nextBtn.addEventListener('click', () => showTestimonial(activeTestimonialIndex + 1));
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                showTestimonial(parseInt(dot.dataset.index));
+            });
+        });
+        
+        // Autoplay testimonials every 7 seconds
+        setInterval(() => {
+            showTestimonial(activeTestimonialIndex + 1);
+        }, 7000);
+    }
+
+    // --- SHOPPING CART SYSTEM ---
+    let cart = JSON.parse(localStorage.getItem('bg_cafe_cart')) || [];
+    
+    const cartNavBtn = document.getElementById('cart-nav-btn');
+    const cartDrawer = document.getElementById('cart-drawer');
+    const cartCloseBtn = document.getElementById('cart-close-btn');
+    const cartOverlay = document.getElementById('cart-overlay');
+    const cartItemsContainer = document.getElementById('cart-items-container');
+    const cartSubtotalVal = document.getElementById('cart-subtotal-val');
+    const cartCount = document.getElementById('cart-count');
+    const checkoutBtn = document.getElementById('checkout-btn');
+
+    function toggleCart(open = true) {
+        if (!cartDrawer) return;
+        if (open) {
+            cartDrawer.classList.add('active');
+            if (cartOverlay) cartOverlay.classList.add('active');
+        } else {
+            cartDrawer.classList.remove('active');
+            if (cartOverlay) cartOverlay.classList.remove('active');
+        }
+    }
+
+    if (cartNavBtn) {
+        cartNavBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleCart(true);
+        });
+    }
+
+    if (cartCloseBtn) cartCloseBtn.addEventListener('click', () => toggleCart(false));
+    if (cartOverlay) cartOverlay.addEventListener('click', () => toggleCart(false));
+
+    function saveCart() {
+        localStorage.setItem('bg_cafe_cart', JSON.stringify(cart));
+        renderCart();
+    }
+
+    function renderCart() {
+        if (!cartItemsContainer) return;
+        cartItemsContainer.innerHTML = '';
+        
+        let totalCount = 0;
+        let subtotal = 0.0;
+
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML = '<p class="cart-empty-msg"><i class="fa-solid fa-bag-shopping" style="font-size: 2.5rem; display: block; margin-bottom: 1rem; color: var(--text-muted);"></i>Your cart is currently empty.</p>';
+        } else {
+            cart.forEach((item, index) => {
+                totalCount += item.qty;
+                subtotal += item.price * item.qty;
+
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'cart-item';
+                
+                let imgHtml = '';
+                if (item.imageSrc) {
+                    imgHtml = `<img src="${item.imageSrc}" alt="${item.name}" class="cart-item-img">`;
+                } else {
+                    const isCbg = item.name.toLowerCase().includes('cbg');
+                    const isBalm = item.name.toLowerCase().includes('balm');
+                    const colorClass = isCbg ? 'liquid-cbg' : (isBalm ? 'liquid-balm' : 'liquid-cbd');
+                    const labelText = isCbg ? 'CBG' : (isBalm ? 'BALM' : 'CBD');
+                    imgHtml = `
+                        <div class="bottle-mockup" style="transform: scale(0.45); margin: 0 auto; height: 75px; width: 45px;">
+                            <div class="bottle-body" style="height: 50px; width: 45px;">
+                                <div class="bottle-label" style="font-size: 0.5rem; padding: 1px 4px;">${labelText}</div>
+                                <div class="bottle-liquid ${colorClass}"></div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                itemDiv.innerHTML = `
+                    <div class="cart-item-img-container">
+                        ${imgHtml}
+                    </div>
+                    <div class="cart-item-details">
+                        <div class="cart-item-title">${item.name}</div>
+                        <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+                        <div class="cart-item-controls">
+                            <div class="cart-qty-selector">
+                                <button class="cart-qty-btn minus" data-index="${index}">&minus;</button>
+                                <span class="cart-qty-val">${item.qty}</span>
+                                <button class="cart-qty-btn plus" data-index="${index}">&plus;</button>
+                            </div>
+                            <button class="cart-remove-btn" data-index="${index}"><i class="fa-regular fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                `;
+                cartItemsContainer.appendChild(itemDiv);
+            });
+        }
+
+        if (cartCount) {
+            cartCount.textContent = totalCount;
+            cartCount.style.transform = 'scale(1.3)';
+            setTimeout(() => cartCount.style.transform = '', 200);
+        }
+        
+        if (cartSubtotalVal) {
+            cartSubtotalVal.textContent = `$${subtotal.toFixed(2)}`;
+        }
+
+        const plusBtns = cartItemsContainer.querySelectorAll('.cart-qty-btn.plus');
+        const minusBtns = cartItemsContainer.querySelectorAll('.cart-qty-btn.minus');
+        const removeBtns = cartItemsContainer.querySelectorAll('.cart-remove-btn');
+
+        plusBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const index = parseInt(btn.dataset.index);
+                cart[index].qty += 1;
+                saveCart();
+            });
+        });
+
+        minusBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const index = parseInt(btn.dataset.index);
+                if (cart[index].qty > 1) {
+                    cart[index].qty -= 1;
+                } else {
+                    cart.splice(index, 1);
+                }
+                saveCart();
+            });
+        });
+
+        removeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const index = parseInt(btn.dataset.index);
+                const name = cart[index].name;
+                cart.splice(index, 1);
+                saveCart();
+                showToast(`Removed ${name} from cart`, 'info');
+            });
+        });
+    }
+
+    const shopCards = document.querySelectorAll('.shop-card');
+    shopCards.forEach(card => {
+        const addBtn = card.querySelector('.btn-shop-add');
+        if (addBtn) {
+            addBtn.addEventListener('click', () => {
+                const name = card.querySelector('h3').textContent;
+                const priceText = card.querySelector('.shop-price').textContent;
+                const price = parseFloat(priceText.replace('$', ''));
+                
+                const imgEl = card.querySelector('.shop-product-img');
+                const imageSrc = imgEl ? imgEl.getAttribute('src') : null;
+
+                const existingIdx = cart.findIndex(item => item.name === name);
+                if (existingIdx > -1) {
+                    cart[existingIdx].qty += 1;
+                } else {
+                    cart.push({
+                        name,
+                        price,
+                        imageSrc,
+                        qty: 1
+                    });
+                }
+
+                saveCart();
+                toggleCart(true);
+                showToast(`Added ${name} to cart!`, 'success');
+            });
+        }
+    });
+
+    if (checkoutBtn) {
+        checkoutBtn.addEventListener('click', () => {
+            if (cart.length === 0) {
+                showToast('Your cart is empty!', 'error');
+                return;
+            }
+            showToast('Thank you! Simulated checkout completed.', 'success');
+            cart = [];
+            saveCart();
+            toggleCart(false);
+        });
+    }
+
+    // Initialize cart render
+    renderCart();
 });
